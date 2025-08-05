@@ -125,28 +125,36 @@ if uploaded_file:
         st.subheader("🔮 Forecast Results")
         st.dataframe(forecast.reset_index().rename(columns={"index": "Forecast Date"}))
 
-       # Define default zoom days and range
+        # Define default zoom range
         max_zoom_days = len(df)
         default_zoom_days = 60
         
-        # Zoom control slider
+        # Zoom slider
         zoom_days = st.slider("🔍 Zoom into last N days (historical + forecast)", min_value=10, max_value=max_zoom_days, value=default_zoom_days)
         
         # Set zoom range
         min_date = df.index[-zoom_days] if len(df) > zoom_days else df.index[0]
         max_date = forecast.index[-1]
         
-        # Plot
-        fig, ax = plt.subplots(figsize=(12, 5))  # Adjustable size
-        df[target_col].plot(ax=ax, label='Historical', color='blue')
-        forecast.plot(ax=ax, label='Forecast', linestyle='--', color='orange')
+        # Plot as line chart
+        fig, ax = plt.subplots(figsize=(12, 5))
         
+        # Plot historical as line
+        ax.plot(df.index, df[target_col], label='Historical', color='blue', linewidth=2)
+        
+        # Plot forecast as line
+        ax.plot(forecast.index, forecast, label='Forecast', linestyle='--', color='orange', linewidth=2)
+        
+        # Set x-axis limits for zoom
         ax.set_xlim([min_date, max_date])
-        ax.set_title(f"{model_type} Forecast (Zoom: Last {zoom_days} Days + Forecast)")
+        
+        # Labels and legend
+        ax.set_title(f"{model_type} Forecast (Line Chart View)")
         ax.set_xlabel("Date")
         ax.set_ylabel(target_col)
         ax.legend()
+        
+        # Show plot in Streamlit
         st.pyplot(fig)
 
-   
 
