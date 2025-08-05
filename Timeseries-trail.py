@@ -13,14 +13,17 @@ st.set_page_config(page_title="Time Series Forecasting", layout="wide")
 st.title("📈 Time Series Forecasting App")
 
 st.divider()
-st.subheader("📌 Model Use Cases Summary")
-st.markdown("""
-- **ARIMA**: Best for stationary data with autocorrelations. Suitable when trend and seasonality are removed or adjusted.
-- **Holt-Winters**: Best for data with seasonal and trend components.
-- **Simple Exponential Smoothing**: Best for short-term forecasting with no trend/seasonality.
-- **Moving Average**: Good for data smoothing and basic trend estimation.
-- **Seasonal Naive**: Best for strictly seasonal patterns (e.g., daily/weekly demand).
+with st.expander("📘 Model Usage Guide (Click to Expand)"):
+    st.markdown("""
+| Model                     | Best Used For                                                                 |
+|--------------------------|-------------------------------------------------------------------------------|
+| **ARIMA**                | Stationary data with autocorrelations, after removing trend/seasonality.     |
+| **Holt-Winters**         | Data with both trend and seasonal components.                                |
+| **Simple Exp. Smoothing**| Short-term forecasting with no trend or seasonality.                         |
+| **Moving Average**       | Smoothing noisy data and identifying basic trends.                           |
+| **Seasonal Naive**       | Strictly seasonal patterns (e.g., same daily/weekly/monthly values).         |
 """)
+
 
 st.divider()
 # Upload CSV file
@@ -39,6 +42,42 @@ if file:
     df.set_index(date_col, inplace=True)
     df.sort_index(inplace=True)
 
+    
+    # ----- Analysis: Stationarity & Seasonality -----
+    st.markdown("---")
+    st.subheader("🔍 Data Characteristics Analysis")
+    
+    # ADF Test
+    st.markdown("**Augmented Dickey-Fuller (ADF) Test for Stationarity**")
+    adf_result = adfuller(df[target_col])
+    st.write({
+        "ADF Statistic": round(adf_result[0], 4),
+        "p-value": round(adf_result[1], 4),
+        "Used lags": adf_result[2],
+        "Number of observations": adf_result[3]
+    })
+    if adf_result[1] < 0.05:
+        st.success("✅ The data is stationary (p-value < 0.05)")
+    else:
+        st.warning("⚠️ The data is NOT stationary (p-value ≥ 0.05)")
+    
+    # Seasonal Decomposition
+    st.markdown("**Seasonal Decomposition (Trend & Seasonality Check)**")
+    try:
+        seasonal_period = st.number_input("Set seasonal period (e.g. 12 for monthly data)", value=12)
+        decomposition = seasonal_decompose(df[target_col], model='additive', period=seasonal_period)
+    
+        fig, axs = plt.subplots(4, 1, figsize=(10, 8), sharex=True)
+        decomposition.observed.plot(ax=axs[0], title="Observed")
+        decomposition.trend.plot(ax=axs[1], title="Trend")
+        decomposition.seasonal.plot(ax=axs[2], title="Seasonal")
+        decomposition.resid.plot(ax=axs[3], title="Residual")
+        st.pyplot(fig)
+    except Exception as e:
+        st.error(f"Seasonal decomposition failed: {e}")
+
+
+    
     st.line_chart(df[target_col])
 
     st.markdown("---")
