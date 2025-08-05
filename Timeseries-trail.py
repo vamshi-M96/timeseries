@@ -28,7 +28,8 @@ if uploaded_file:
     target_col = st.selectbox("🎯 Select Target Column", [col for col in df.columns if col != date_col])
 
     # Convert and sort
-    df[date_col] = pd.to_datetime(df[date_col])
+    df[date_col] = pd.to_datetime(df[date_col], errors='coerce')
+    df = df.dropna(subset=[date_col])
     df = df.set_index(date_col).sort_index()
 
     # Inference frequency
