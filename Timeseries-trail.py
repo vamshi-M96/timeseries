@@ -83,11 +83,11 @@ if uploaded_file:
         model_fit = None
 
         if model_type == "Simple Exponential Smoothing":
-            st.warning("🔍 SES is best for level-only data. If data has trend or seasonality, SES may underperform.")
+            st.info("🔍 SES is best for level-only data. If data has trend or seasonality, SES may underperform.")
             model = SimpleExpSmoothing(series)
             model_fit = model.fit()
         elif model_type == "Holt-Winters":
-            st.success("✅ Holt-Winters works well when data has trend and/or seasonality.")
+            st.info("✅ Holt-Winters works well when data has trend and/or seasonality.")
             model = ExponentialSmoothing(series, seasonal='add', seasonal_periods=seasonal_period)
             model_fit = model.fit()
         elif model_type == "ARIMA":
