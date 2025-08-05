@@ -14,7 +14,7 @@ warnings.filterwarnings("ignore")
 
 st.set_page_config(layout="wide")
 st.title("📊 General Time Series Analysis & Forecasting")
-'''
+
 # Upload
 file = st.file_uploader("Upload CSV or Excel File", type=["csv", "xlsx"])
 
@@ -125,4 +125,3 @@ if file:
 
     csv = forecast_df.to_csv().encode('utf-8')
     st.download_button("Download Forecasts CSV", csv, "forecast_results.csv", "text/csv")
-'''
