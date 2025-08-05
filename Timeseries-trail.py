@@ -125,6 +125,12 @@ if uploaded_file:
         st.subheader("🔮 Forecast Results")
         st.dataframe(forecast.reset_index().rename(columns={"index": "Forecast Date"}))
 
+
+         # Combine historical and forecast into one DataFrame
+        combined = pd.concat([df[[target_col]], forecast], axis=1)
+    
+        st.subheader("📈 Forecast Line Chart (Full View)")
+        st.line_chart(combined)
         # Define default zoom range
         max_zoom_days = len(df)
         default_zoom_days = 60
