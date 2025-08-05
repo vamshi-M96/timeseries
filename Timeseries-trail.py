@@ -126,9 +126,18 @@ if uploaded_file:
         st.dataframe(forecast.reset_index().rename(columns={"index": "Forecast Date"}))
 
         # Plot
-        fig, ax = plt.subplots(figsize=(10, 4))
+        fig, ax = plt.subplots(figsize=(12, 5))
         df[target_col].plot(ax=ax, label='Historical', color='blue')
         forecast.plot(ax=ax, label='Forecast', linestyle='--', color='orange')
+
+        # Set zoom to show last N days + forecast
+        zoom_days = 60  # You can increase this for more context
+        min_date = df.index[-zoom_days] if len(df) > zoom_days else df.index[0]
+        max_date = forecast.index[-1]
+        
+        ax.set_xlim([min_date, max_date])
+
+
         ax.set_title(f"{model_type} Forecast")
         ax.set_xlabel("Date")
         ax.set_ylabel(target_col)
