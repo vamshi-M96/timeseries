@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 
 st.set_page_config(
     page_title="📈 Time Series Forecasting",
-    layout="wide"  # 👈 enables wide layout
+     # 👈 enables wide layout
 )
 
 st.title("📊 Time Series Forecasting App")
