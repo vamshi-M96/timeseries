@@ -80,21 +80,31 @@ if file:
         forecast.index = pd.date_range(df.index[-1], periods=periods+1, freq='D')[1:]
 
     if forecast is not None:
-        st.success(f"Forecast using {model_type} model")
+        st.success(f"✅ Forecast using {model_type} model")
+    
+        # Combine original and forecast for continuous plotting
         fig, ax = plt.subplots()
-        df[target_col].plot(ax=ax, label='Original')
-        forecast.plot(ax=ax, label='Forecast', linestyle='--')
+        
+        # Plot original series
+        df[target_col].plot(ax=ax, label='Original', color='blue')
+    
+        # Plot forecast (Series or DataFrame)
+        if isinstance(forecast, pd.Series):
+            forecast.plot(ax=ax, label='Forecast', linestyle='--', color='orange')
+        elif isinstance(forecast, pd.DataFrame) and target_col in forecast.columns:
+            forecast[target_col].plot(ax=ax, label='Forecast', linestyle='--', color='orange')
+        else:
+            forecast.plot(ax=ax, label='Forecast', linestyle='--', color='orange')
+    
+        ax.set_title(f"{model_type} Forecast")
+        ax.set_xlabel("Date")
+        ax.set_ylabel(target_col)
         plt.legend()
         st.pyplot(fig)
-        st.write(forecast)
-
     
-        # Plot original + prediction
-        fig, ax = plt.subplots()
-        df[target_col].plot(ax=ax, label='Original', legend=True)
-        forecast[target_col].plot(ax=ax, label='Forecast', legend=True, linestyle='--')
-        plt.title(f"{model_type} Forecast")
-        st.pyplot(fig)
+        # Show forecast values as table
+        st.dataframe(forecast)
+
 
     st.markdown("---")
     st.subheader("📌 Model Use Cases Summary")
