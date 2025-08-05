@@ -76,7 +76,7 @@ if file:
     except Exception as e:
         st.error(f"Seasonal decomposition failed: {e}")
 
-
+    st.divider()
     
     st.line_chart(df[target_col])
 
