@@ -12,6 +12,17 @@ from datetime import datetime
 st.set_page_config(page_title="Time Series Forecasting", layout="wide")
 st.title("📈 Time Series Forecasting App")
 
+ST.divider()
+st.subheader("📌 Model Use Cases Summary")
+st.markdown("""
+- **ARIMA**: Best for stationary data with autocorrelations. Suitable when trend and seasonality are removed or adjusted.
+- **Holt-Winters**: Best for data with seasonal and trend components.
+- **Simple Exponential Smoothing**: Best for short-term forecasting with no trend/seasonality.
+- **Moving Average**: Good for data smoothing and basic trend estimation.
+- **Seasonal Naive**: Best for strictly seasonal patterns (e.g., daily/weekly demand).
+""")
+
+st.divider()
 # Upload CSV file
 file = st.file_uploader("Upload your time series CSV file", type=["csv", "xlsx"])
 
@@ -95,24 +106,19 @@ if file:
             forecast[target_col].plot(ax=ax, label='Forecast', linestyle='--', color='orange')
         else:
             forecast.plot(ax=ax, label='Forecast', linestyle='--', color='orange')
-    
+
+
+        # Show forecast values as table
+        st.dataframe(forecast)
+        
         ax.set_title(f"{model_type} Forecast")
         ax.set_xlabel("Date")
         ax.set_ylabel(target_col)
         plt.legend()
         st.pyplot(fig)
     
-        # Show forecast values as table
-        st.dataframe(forecast)
+        
 
 
-    st.markdown("---")
-    st.subheader("📌 Model Use Cases Summary")
-    st.markdown("""
-    - **ARIMA**: Best for stationary data with autocorrelations. Suitable when trend and seasonality are removed or adjusted.
-    - **Holt-Winters**: Best for data with seasonal and trend components.
-    - **Simple Exponential Smoothing**: Best for short-term forecasting with no trend/seasonality.
-    - **Moving Average**: Good for data smoothing and basic trend estimation.
-    - **Seasonal Naive**: Best for strictly seasonal patterns (e.g., daily/weekly demand).
-    """)
+   
 
