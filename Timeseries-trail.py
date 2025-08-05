@@ -12,7 +12,7 @@ from datetime import datetime
 st.set_page_config(page_title="Time Series Forecasting", layout="wide")
 st.title("📈 Time Series Forecasting App")
 
-ST.divider()
+st.divider()
 st.subheader("📌 Model Use Cases Summary")
 st.markdown("""
 - **ARIMA**: Best for stationary data with autocorrelations. Suitable when trend and seasonality are removed or adjusted.
