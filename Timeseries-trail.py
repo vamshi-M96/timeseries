@@ -88,6 +88,14 @@ if file:
         st.pyplot(fig)
         st.write(forecast)
 
+    
+    # Plot original + prediction
+    fig, ax = plt.subplots()
+    df[target_col].plot(ax=ax, label='Original', legend=True)
+    forecast_df[target_col].plot(ax=ax, label='Forecast', legend=True, linestyle='--')
+    plt.title(f"{model_type} Forecast")
+    st.pyplot(fig)
+
     st.markdown("---")
     st.subheader("📌 Model Use Cases Summary")
     st.markdown("""
