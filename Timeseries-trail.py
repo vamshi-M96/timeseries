@@ -36,7 +36,8 @@ if file:
         target_col = st.selectbox("Select Target Variable", numeric_cols)
 
     # Preprocessing
-    df[datetime_col] = pd.to_datetime(df[datetime_col])
+    df[datetime_col] = pd.to_datetime(df[datetime_col], dayfirst=True, errors='coerce')
+
     df.set_index(datetime_col, inplace=True)
     df.sort_index(inplace=True)
 
