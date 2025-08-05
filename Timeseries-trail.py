@@ -10,7 +10,10 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from datetime import datetime, timedelta
 
-st.set_page_config(page_title="📈 Time Series Forecasting")
+st.set_page_config(
+    page_title="📈 Time Series Forecasting",
+    layout="wide"  # 👈 enables wide layout
+)
 
 st.title("📊 Time Series Forecasting App")
 
