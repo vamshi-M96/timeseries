@@ -39,7 +39,7 @@ if uploaded_file:
     st.write(f"⏱️ Detected Frequency: `{freq}`")
 
     # Show plot
-    st.line_chart(df[target_col])
+    #st.line_chart(df[target_col])
 
     # Stationarity Check
     st.subheader("🔍 Stationarity Test (ADF)")
